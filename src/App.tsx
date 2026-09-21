@@ -168,10 +168,11 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 bg-grid-pattern relative transition-colors duration-300 flex">
-      {/* Background Radial Ambient Glows */}
-      <div className="fixed top-0 left-1/4 w-[600px] h-[400px] bg-violet-500/10 dark:bg-violet-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="fixed bottom-0 right-1/4 w-[500px] h-[400px] bg-cyan-500/10 dark:bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none -z-10" />
+    <div className="min-h-screen bg-slate-50 dark:bg-[#090C12] text-slate-900 dark:text-slate-100 bg-grid-pattern relative transition-colors duration-300 flex font-sans">
+      {/* Background Radial Ambient Glows (Red, Blue, Green, Black, Gray) */}
+      <div className="fixed top-0 left-1/4 w-[600px] h-[400px] bg-blue-600/10 dark:bg-blue-600/15 rounded-full blur-[140px] pointer-events-none -z-10" />
+      <div className="fixed bottom-0 right-1/4 w-[500px] h-[400px] bg-emerald-500/10 dark:bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none -z-10" />
+      <div className="fixed top-1/3 right-1/3 w-[400px] h-[300px] bg-red-500/5 dark:bg-red-500/5 rounded-full blur-[140px] pointer-events-none -z-10" />
 
       {/* Sidebar Navigation */}
       <Sidebar
