@@ -1,0 +1,481 @@
+// ============================================================================
+// PeerSpace - Complete Student Learning Ecosystem Prisma Schema
+// Database: PostgreSQL with Prisma ORM
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------------------------------
+// 1. ENUMS
+// ----------------------------------------------------------------------------
+
+enum UserRole {
+  STUDENT
+  MODERATOR
+  ADMIN
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  COMPLETED
+}
+
+enum RoomStatus {
+  ACTIVE
+  PAUSED
+  CLOSED
+}
+
+enum PomodoroMode {
+  POMODORO_25_5
+  POMODORO_50_10
+  POMODORO_90_20
+  CUSTOM
+}
+
+enum ResourceType {
+  PDF
+  MARKDOWN
+  CHEATSHEET
+  SUMMARY
+  QUESTION_BANK
+  LAB_MANUAL
+}
+
+enum TestDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum QuestionType {
+  MCQ
+  TRUE_FALSE
+  FILL_IN_BLANK
+  SHORT_ANSWER
+  DESCRIPTIVE
+  CODING
+}
+
+// ----------------------------------------------------------------------------
+// 2. USER & AUTHENTICATION & GAMIFICATION
+// ----------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String?
+  name          String
+  username      String    @unique
+  avatarUrl     String?
+  role          UserRole  @default(STUDENT)
+  college       String?
+  department    String?
+  semester      Int?
+  
+  // Gamification & Streaks
+  xp            Int       @default(0)
+  level         Int       @default(1)
+  currentStreak Int       @default(1)
+  longestStreak Int       @default(1)
+  lastActiveAt  DateTime  @default(now())
+  graceDaysLeft Int       @default(1)
+  
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  roomsOwned         StudyRoom[]         @relation("RoomOwner")
+  roomMemberships    RoomMember[]
+  roomMessages       RoomMessage[]
+  decks              Deck[]
+  cardReviews        CardReviewLog[]
+  tasks              Task[]
+  resourcesUploaded  Resource[]          @relation("ResourceUploader")
+  resourceUpvotes    ResourceUpvote[]
+  resourceBookmarks  ResourceBookmark[]
+  studyPlans         StudyPlan[]
+  mockTestAttempts   MockTestAttempt[]
+  doubtQueries       DoubtQuery[]
+  pomodoroSessions   PomodoroSession[]
+  userBadges         UserBadge[]
+
+  @@index([email])
+  @@index([username])
+  @@index([xp])
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  code        String      @unique // e.g. "STREAK_7_DAYS", "FOCUS_100_HOURS"
+  title       String
+  description String
+  icon        String
+  xpReward    Int         @default(100)
+  createdAt   DateTime    @default(now())
+
+  users       UserBadge[]
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  badgeId   String
+  earnedAt  DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+}
+
+// ----------------------------------------------------------------------------
+// 3. REAL-TIME STUDY ROOMS & LIVE POMODORO
+// ----------------------------------------------------------------------------
+
+model StudyRoom {
+  id              String         @id @default(cuid())
+  name            String
+  description     String?
+  category        String         // e.g. "Computer Science", "Algorithms"
+  isPrivate       Boolean        @default(false)
+  passcode        String?
+  maxMembers      Int            @default(25)
+  status          RoomStatus     @default(ACTIVE)
+  
+  // Synchronized Pomodoro State
+  pomodoroMode    PomodoroMode   @default(POMODORO_25_5)
+  timerSeconds    Int            @default(1500)
+  isTimerRunning  Boolean        @default(false)
+  timerStartedAt  DateTime?
+  
+  ownerId         String
+  owner           User           @relation("RoomOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  members         RoomMember[]
+  messages        RoomMessage[]
+  sessions        PomodoroSession[]
+
+  @@index([category])
+  @@index([ownerId])
+}
+
+model RoomMember {
+  id          String     @id @default(cuid())
+  roomId      String
+  userId      String
+  isOnline    Boolean    @default(true)
+  isMuted     Boolean    @default(false)
+  currentTask String?    // Current study goal in the room
+  joinedAt    DateTime   @default(now())
+
+  room        StudyRoom  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
+}
+
+model RoomMessage {
+  id        String     @id @default(cuid())
+  roomId    String
+  userId    String
+  content   String
+  isSystem  Boolean    @default(false)
+  createdAt DateTime   @default(now())
+
+  room      StudyRoom  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, createdAt])
+}
+
+model PomodoroSession {
+  id              String       @id @default(cuid())
+  userId          String
+  roomId          String?
+  durationSeconds Int
+  mode            PomodoroMode @default(POMODORO_25_5)
+  focusScore      Int          @default(100)
+  subject         String?
+  notes           String?
+  completedAt     DateTime     @default(now())
+
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room            StudyRoom?   @relation(fields: [roomId], references: [id], onDelete: SetNull)
+
+  @@index([userId, completedAt])
+}
+
+// ----------------------------------------------------------------------------
+// 4. SM-2 SPACED REPETITION FLASHCARDS
+// ----------------------------------------------------------------------------
+
+model Deck {
+  id           String      @id @default(cuid())
+  title        String
+  description  String?
+  category     String      // e.g. "Data Structures", "Operating Systems"
+  isPublic     Boolean     @default(true)
+  color        String      @default("from-violet-600 to-indigo-600")
+  masteryScore Float       @default(0) // 0 - 100%
+  userId       String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  cards        Flashcard[]
+
+  @@index([userId])
+  @@index([category])
+}
+
+model Flashcard {
+  id           String          @id @default(cuid())
+  deckId       String
+  front        String          // Markdown or plain text
+  back         String          // Markdown or plain text
+  hint         String?
+  
+  // SuperMemo SM-2 Parameters
+  interval     Int             @default(1)   // Days until next review
+  repetitions  Int             @default(0)   // Number of consecutive successful recalls
+  easeFactor   Float           @default(2.5) // Difficulty modifier (min 1.3)
+  nextReviewAt DateTime        @default(now())
+  
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  deck         Deck            @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  reviewLogs   CardReviewLog[]
+
+  @@index([deckId, nextReviewAt])
+}
+
+model CardReviewLog {
+  id          String     @id @default(cuid())
+  cardId      String
+  userId      String
+  grade       Int        // 1: Again, 2: Hard, 3: Good, 4: Easy
+  interval    Int
+  easeFactor  Float
+  reviewedAt  DateTime   @default(now())
+
+  card        Flashcard  @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, reviewedAt])
+}
+
+// ----------------------------------------------------------------------------
+// 5. SMART KANBAN & STUDY TASKS
+// ----------------------------------------------------------------------------
+
+model Task {
+  id               String      @id @default(cuid())
+  userId           String
+  title            String
+  description      String?
+  category         String      // Course / Tag, e.g. "CS162", "Math 53"
+  status           TaskStatus  @default(TODO)
+  priority         Priority    @default(MEDIUM)
+  dueDate          DateTime?
+  estimatedMinutes Int         @default(30)
+  actualMinutes    Int         @default(0)
+  orderIndex       Int         @default(0)
+  
+  planDayId        String?
+  planDay          PlanDay?    @relation(fields: [planDayId], references: [id], onDelete: SetNull)
+
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  completedAt      DateTime?
+
+  user             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subtasks         Subtask[]
+
+  @@index([userId, status])
+}
+
+model Subtask {
+  id          String   @id @default(cuid())
+  taskId      String
+  title       String
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+}
+
+// ----------------------------------------------------------------------------
+// 6. RESOURCE HUB & PDF MARKETPLACE
+// ----------------------------------------------------------------------------
+
+model Resource {
+  id             String             @id @default(cuid())
+  title          String
+  description    String
+  category       String             // e.g. "Computer Science", "AI & ML"
+  fileUrl        String             // Encrypted S3/R2 presigned URL
+  fileSize       String             // e.g. "4.2 MB"
+  fileType       ResourceType       @default(PDF)
+  pages          Int                @default(1)
+  tags           String[]           // Array of tag strings
+  contentSnippet String?            // Markdown notes / extracted text
+  downloads      Int                @default(0)
+  upvotesCount   Int                @default(0)
+  
+  uploaderId     String
+  uploader       User               @relation("ResourceUploader", fields: [uploaderId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  upvotes        ResourceUpvote[]
+  bookmarks      ResourceBookmark[]
+
+  @@index([category])
+  @@index([uploaderId])
+}
+
+model ResourceUpvote {
+  id         String    @id @default(cuid())
+  resourceId String
+  userId     String
+  createdAt  DateTime  @default(now())
+
+  resource   Resource  @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([resourceId, userId])
+}
+
+model ResourceBookmark {
+  id         String    @id @default(cuid())
+  resourceId String
+  userId     String
+  createdAt  DateTime  @default(now())
+
+  resource   Resource  @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([resourceId, userId])
+}
+
+// ----------------------------------------------------------------------------
+// 7. AI STUDY PLANNER
+// ----------------------------------------------------------------------------
+
+model StudyPlan {
+  id            String    @id @default(cuid())
+  userId        String
+  examName      String    // e.g. "Data Mining Midterm"
+  examDate      DateTime
+  totalUnits    Int
+  dailyHours    Float
+  overview      String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  days          PlanDay[]
+
+  @@index([userId])
+}
+
+model PlanDay {
+  id          String    @id @default(cuid())
+  planId      String
+  dayNumber   Int       // 1, 2, 3...
+  targetDate  DateTime
+  topics      String[]  // Units / topics scheduled for this day
+  isRevision  Boolean   @default(false)
+  isCompleted Boolean   @default(false)
+
+  plan        StudyPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  tasks       Task[]
+
+  @@index([planId, dayNumber])
+}
+
+// ----------------------------------------------------------------------------
+// 8. AI MOCK TEST ENGINE
+// ----------------------------------------------------------------------------
+
+model MockTest {
+  id          String            @id @default(cuid())
+  title       String
+  subject     String
+  unit        String
+  difficulty  TestDifficulty    @default(MEDIUM)
+  timeLimit   Int               // Time limit in minutes
+  totalMarks  Int
+  questions   Json              // Array of question objects with options & correct answers
+
+  createdAt   DateTime          @default(now())
+
+  attempts    MockTestAttempt[]
+
+  @@index([subject, difficulty])
+}
+
+model MockTestAttempt {
+  id              String    @id @default(cuid())
+  mockTestId      String
+  userId          String
+  score           Float
+  accuracy        Float
+  timeSpentSecs   Int
+  userAnswers     Json      // Map of user's submitted answers
+  weakTopics      String[]  // AI identified weak topics
+  recommendations String?   // AI revision recommendations
+  completedAt     DateTime  @default(now())
+
+  mockTest        MockTest  @relation(fields: [mockTestId], references: [id], onDelete: Cascade)
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, completedAt])
+}
+
+// ----------------------------------------------------------------------------
+// 9. AI DOUBT SOLVER
+// ----------------------------------------------------------------------------
+
+model DoubtQuery {
+  id           String    @id @default(cuid())
+  userId       String
+  subject      String
+  questionText String
+  imageUrl     String?
+  codeSnippet  String?
+  solutionText String    // AI generated step-by-step markdown response
+  isResolved   Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, subject])
+}
