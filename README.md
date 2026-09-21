@@ -1,4 +1,6 @@
-# React + TypeScript + Vite
+# PeerSpace - React + TypeScript + Vite
+
+Next-generation student productivity platform with live focus rooms, SM-2 flashcards, resource sharing marketplace, and study Kanban.
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
