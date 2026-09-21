@@ -96,21 +96,21 @@ export const Header: React.FC<HeaderProps> = ({
   const getSoundIcon = (id: AmbientSoundType) => {
     switch (id) {
       case 'rain': return <CloudRain className="w-3.5 h-3.5" />;
-      case 'lofi': return <Music className="w-3.5 h-3.5 text-blue-400" />;
+      case 'lofi': return <Music className="w-3.5 h-3.5 text-orange-400" />;
       case 'brownNoise': return <Waves className="w-3.5 h-3.5" />;
       case 'cafe': return <Coffee className="w-3.5 h-3.5" />;
       case 'campfire': return <Flame className="w-3.5 h-3.5 text-red-500" />;
-      case 'ocean': return <Waves className="w-3.5 h-3.5 text-blue-400" />;
-      case 'forest': return <Sparkles className="w-3.5 h-3.5 text-emerald-400" />;
+      case 'ocean': return <Waves className="w-3.5 h-3.5 text-green-400" />;
+      case 'forest': return <Sparkles className="w-3.5 h-3.5 text-green-400" />;
       case 'pinkNoise': return <Sparkles className="w-3.5 h-3.5 text-red-400" />;
-      case 'vinyl': return <Music className="w-3.5 h-3.5 text-amber-400" />;
+      case 'vinyl': return <Music className="w-3.5 h-3.5 text-orange-400" />;
       default: return <Volume2 className="w-3.5 h-3.5" />;
     }
   };
 
   return (
     <header
-      className={`fixed top-0 right-0 z-30 h-16 border-b border-slate-200 dark:border-white/10 bg-white/90 dark:bg-[#090C12]/90 backdrop-blur-xl transition-all duration-300 flex items-center justify-between px-6 shadow-xs ${
+      className={`fixed top-0 right-0 z-30 h-16 border-b border-slate-200 dark:border-white/10 bg-white/95 dark:bg-[#050505]/95 backdrop-blur-xl transition-all duration-250 flex items-center justify-between px-6 font-sans ${
         collapsed ? 'left-20' : 'left-64'
       }`}
     >
@@ -118,11 +118,11 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="flex items-center gap-4 flex-1 max-w-md">
         <button
           onClick={onOpenCommand}
-          className="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-blue-500/40 transition-all text-xs group shadow-inner"
+          className="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white hover:border-orange-500/40 transition-all text-xs group shadow-inner"
         >
-          <Search className="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+          <Search className="w-4 h-4 text-slate-400 group-hover:text-orange-500 transition-colors" />
           <span className="flex-1 text-left font-medium font-sans">Search notes, decks, rooms, or tasks...</span>
-          <kbd className="hidden sm:inline-flex items-center gap-1 font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 group-hover:border-blue-500/30 shadow-xs">
+          <kbd className="hidden sm:inline-flex items-center gap-1 font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-white dark:bg-black border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 group-hover:border-orange-500/30 shadow-xs">
             <span>⌘</span>K
           </kbd>
         </button>
@@ -134,18 +134,18 @@ export const Header: React.FC<HeaderProps> = ({
         {activeFocusRoomName && (
           <button
             onClick={onQuickFocus}
-            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-colors font-mono"
+            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-xs font-semibold hover:bg-green-500/20 transition-colors font-mono"
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-ping" />
             <span className="truncate max-w-[140px]">{activeFocusRoomName}</span>
           </button>
         )}
 
-        {/* ⚡ One-Click Smart Study Trigger */}
+        {/* ⚡ One-Click Smart Study Trigger in Orange */}
         {onOpenSmartStudy && (
           <button
             onClick={onOpenSmartStudy}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all cursor-pointer font-sans"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold shadow-md shadow-orange-500/20 transition-all cursor-pointer font-sans"
           >
             <Zap className="w-3.5 h-3.5 fill-current" />
             <span>Smart Study</span>
@@ -155,14 +155,14 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Theme Toggle (Light / Dark Mode) */}
         <button
           onClick={onToggleTheme}
-          className="p-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-amber-300 hover:border-blue-400/40 dark:hover:border-amber-400/40 transition-all shadow-xs"
-          title={theme === 'dark' ? 'Switch to Light mode' : 'Switch to Dark mode'}
+          className="p-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-orange-500 hover:border-orange-400/40 transition-all shadow-xs"
+          title={theme === 'dark' ? 'Switch to White theme' : 'Switch to Black theme'}
           aria-label="Toggle Theme"
         >
           {theme === 'dark' ? (
-            <Sun className="w-4 h-4 text-amber-400 hover:rotate-45 transition-transform" />
+            <Sun className="w-4 h-4 text-orange-400 hover:rotate-45 transition-transform" />
           ) : (
-            <Moon className="w-4 h-4 text-blue-600 hover:-rotate-12 transition-transform" />
+            <Moon className="w-4 h-4 text-black hover:-rotate-12 transition-transform" />
           )}
         </button>
 
@@ -173,23 +173,23 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={handleTogglePlay}
               className={`p-1.5 rounded-lg transition-all ${
                 isPlaying
-                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                  ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
               }`}
               title={isPlaying ? 'Pause ambient sound' : 'Play ambient sound'}
             >
               {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
             </button>
 
-            {/* Visualizer in Blue */}
+            {/* Visualizer in Orange */}
             <div className="hidden lg:block">
-              <AudioVisualizer isPlaying={isPlaying} color="#2563EB" barsCount={18} />
+              <AudioVisualizer isPlaying={isPlaying} color="#F97316" barsCount={18} />
             </div>
 
             {/* Sound Selector Dropdown */}
             <button
               onClick={() => setShowSoundMenu(!showSoundMenu)}
-              className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-blue-500 dark:hover:text-white px-2 py-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors font-sans"
+              className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-orange-500 dark:hover:text-white px-2 py-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors font-sans"
             >
               {getSoundIcon(activeSound)}
               <span className="hidden sm:inline">
@@ -201,7 +201,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Volume Control */}
             <button
               onClick={handleToggleMute}
-              className="p-1 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+              className="p-1 text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white transition-colors"
               title={isMuted ? 'Unmute' : 'Mute'}
             >
               {isMuted ? <VolumeX className="w-3.5 h-3.5 text-red-500" /> : <Volume2 className="w-3.5 h-3.5" />}
@@ -210,10 +210,10 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Sound Menu Popover */}
           {showSoundMenu && (
-            <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-[#0F1522] border border-slate-200 dark:border-white/10 shadow-2xl p-3 z-50 backdrop-blur-2xl animate-in fade-in zoom-in-95">
+            <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-[#0D0D0D] border border-slate-200 dark:border-white/10 shadow-2xl p-3 z-50 backdrop-blur-2xl animate-in fade-in zoom-in-95">
               <div className="text-xs font-semibold text-slate-600 dark:text-slate-400 px-2 mb-2 flex items-center justify-between font-sans">
                 <span>Ambient Soundscapes</span>
-                <span className="text-[10px] text-blue-500 font-mono font-bold">Web Audio Synth</span>
+                <span className="text-[10px] text-orange-500 font-mono font-bold">Web Audio Synth</span>
               </div>
 
               <div className="space-y-1 mb-3">
@@ -225,8 +225,8 @@ export const Header: React.FC<HeaderProps> = ({
                       onClick={() => handleSelectSound(sound.id)}
                       className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs transition-all ${
                         isActive
-                          ? 'bg-blue-600 text-white font-medium shadow-md shadow-blue-500/20'
-                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
+                          ? 'bg-orange-500 text-white font-medium shadow-md shadow-orange-500/20'
+                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-black dark:hover:text-white'
                       }`}
                     >
                       <div className="flex items-center gap-2 font-medium font-sans">
@@ -254,7 +254,7 @@ export const Header: React.FC<HeaderProps> = ({
                   step="0.05"
                   value={volume}
                   onChange={handleVolumeChange}
-                  className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                  className="w-full h-1.5 bg-slate-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
               </div>
             </div>
@@ -265,15 +265,15 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="relative">
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="relative p-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-blue-500/30 transition-all shadow-xs"
+            className="relative p-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:border-orange-500/30 transition-all shadow-xs"
           >
             <Bell className="w-4 h-4" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#090C12]" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#050505]" />
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-white dark:bg-[#0F1522] border border-slate-200 dark:border-white/10 shadow-2xl p-3 z-50 backdrop-blur-2xl">
-              <div className="flex items-center justify-between px-2 pb-2 mb-2 border-b border-slate-200 dark:border-white/10 text-xs font-semibold text-slate-800 dark:text-slate-300 font-sans">
+            <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-white dark:bg-[#0D0D0D] border border-slate-200 dark:border-white/10 shadow-2xl p-3 z-50 backdrop-blur-2xl">
+              <div className="flex items-center justify-between px-2 pb-2 mb-2 border-b border-slate-200 dark:border-white/10 text-xs font-semibold text-black dark:text-white font-sans">
                 <span>Notifications</span>
                 <span className="text-[10px] text-red-500 font-mono font-bold">2 unread</span>
               </div>

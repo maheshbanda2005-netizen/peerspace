@@ -211,7 +211,7 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
               <span className="w-3 h-3 rounded-full bg-emerald-500 animate-ping" />
               {activeRoom.name}
             </h1>
-            <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-violet-100 dark:bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-500/30 shadow-xs">
+            <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-orange-50 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-500/30 shadow-xs">
               {activeRoom.category}
             </span>
           </div>
@@ -256,17 +256,17 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
             <div className={`absolute inset-0 transition-opacity duration-1000 pointer-events-none ${
               isRunning ? 'opacity-30' : 'opacity-10'
             }`}>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-violet-500 dark:bg-violet-600 rounded-full blur-[100px]" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-500 rounded-full blur-[100px]" />
             </div>
 
             {/* Mode Selectors */}
-            <div className="relative z-10 flex items-center bg-slate-100/90 dark:bg-slate-950/70 border border-slate-200 dark:border-white/10 p-1 rounded-2xl mb-8 backdrop-blur-md shadow-xs">
+            <div className="relative z-10 flex items-center bg-slate-100/90 dark:bg-black border border-slate-200 dark:border-white/10 p-1 rounded-2xl mb-8 backdrop-blur-md shadow-xs">
               <button
                 onClick={() => switchMode('focus')}
                 className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   mode === 'focus'
-                    ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 Focus (25m)
@@ -275,8 +275,8 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                 onClick={() => switchMode('shortBreak')}
                 className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   mode === 'shortBreak'
-                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'bg-green-600 text-white shadow-md shadow-green-600/30'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 Short Break (5m)
@@ -285,8 +285,8 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                 onClick={() => switchMode('longBreak')}
                 className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   mode === 'longBreak'
-                    ? 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'bg-red-500 text-white shadow-md shadow-red-500/30'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 Long Break (15m)
@@ -295,8 +295,8 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                 onClick={() => switchMode('custom')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   mode === 'custom'
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'bg-orange-600 text-white shadow-md shadow-orange-600/30'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 Sprint (50m)
@@ -311,7 +311,7 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                   cy="130"
                   r="120"
                   stroke="currentColor"
-                  className="text-slate-200 dark:text-slate-800"
+                  className="text-slate-200 dark:text-white/10"
                   strokeWidth="8"
                   fill="transparent"
                 />
@@ -319,7 +319,7 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                   cx="130"
                   cy="130"
                   r="120"
-                  stroke={mode === 'focus' ? '#8B5CF6' : mode === 'shortBreak' ? '#10B981' : '#06B6D4'}
+                  stroke={mode === 'focus' ? '#F97316' : mode === 'shortBreak' ? '#22C55E' : '#EF4444'}
                   strokeWidth="8"
                   strokeDasharray="754"
                   strokeDashoffset={strokeDashoffset}
@@ -331,11 +331,11 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
 
               {/* Time Display */}
               <div className="absolute flex flex-col items-center justify-center text-center">
-                <span className="text-5xl sm:text-6xl font-extrabold font-mono tracking-tight text-slate-900 dark:text-white select-none">
+                <span className="text-5xl sm:text-6xl font-extrabold font-mono tracking-tight text-black dark:text-white select-none">
                   {formatTime(timeLeft)}
                 </span>
                 <span className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 font-mono mt-2 flex items-center gap-1.5 font-bold">
-                  <span className={`w-2 h-2 rounded-full ${isRunning ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400 dark:bg-slate-600'}`} />
+                  <span className={`w-2 h-2 rounded-full ${isRunning ? 'bg-green-500 animate-pulse' : 'bg-slate-400 dark:bg-slate-600'}`} />
                   {isRunning ? (mode === 'focus' ? 'Deep Work' : 'Resting') : 'Paused'}
                 </span>
               </div>
@@ -348,7 +348,7 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                   setTimeLeft(duration);
                   setIsRunning(false);
                 }}
-                className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-all shadow-xs"
+                className="p-3 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition-all shadow-xs"
                 title="Reset timer"
               >
                 <RotateCcw className="w-5 h-5" />
@@ -358,8 +358,8 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                 onClick={() => setIsRunning(!isRunning)}
                 className={`px-8 py-3.5 rounded-2xl font-bold text-sm text-white shadow-xl transition-all flex items-center gap-2 ${
                   isRunning
-                    ? 'bg-amber-600 hover:bg-amber-500 shadow-amber-600/30'
-                    : 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 shadow-violet-600/30 scale-105'
+                    ? 'bg-red-500 hover:bg-red-600 shadow-red-500/30'
+                    : 'bg-orange-500 hover:bg-orange-600 shadow-orange-500/30 scale-105'
                 }`}
               >
                 {isRunning ? (
@@ -377,7 +377,7 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                 onClick={() => {
                   setTimeLeft(0);
                 }}
-                className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-all shadow-xs"
+                className="p-3 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition-all shadow-xs"
                 title="Skip to finish"
               >
                 <SkipForward className="w-5 h-5" />
@@ -385,7 +385,7 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
 
               <button
                 onClick={() => setIsZenMode(true)}
-                className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all shadow-xs"
+                className="p-3 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-orange-500 dark:hover:text-orange-400 hover:bg-slate-200 dark:hover:bg-white/10 transition-all shadow-xs"
                 title="Enter Fullscreen Zen Mode"
               >
                 <Maximize2 className="w-5 h-5" />
@@ -401,12 +401,12 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                     type="text"
                     value={myTask}
                     onChange={e => setMyTask(e.target.value)}
-                    className="w-full bg-white dark:bg-slate-950 border border-violet-400 dark:border-violet-500/40 rounded-lg px-2.5 py-1 text-slate-900 dark:text-slate-200 text-xs focus:outline-none"
+                    className="w-full bg-white dark:bg-black border border-orange-400 dark:border-orange-500/40 rounded-lg px-2.5 py-1 text-black dark:text-white text-xs focus:outline-none"
                     placeholder="What are you focusing on?"
                   />
                   <button
                     onClick={() => setIsEditingTask(false)}
-                    className="p-1 text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300"
+                    className="p-1 text-green-600 dark:text-green-400 hover:text-green-700"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                   </button>
@@ -414,7 +414,7 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
               ) : (
                 <div
                   onClick={() => setIsEditingTask(true)}
-                  className="text-violet-700 dark:text-violet-300 hover:text-violet-800 dark:hover:text-violet-200 cursor-pointer font-semibold truncate ml-2 max-w-[260px] underline decoration-violet-500/40 underline-offset-2"
+                  className="text-orange-600 dark:text-orange-400 hover:text-orange-700 cursor-pointer font-semibold truncate ml-2 max-w-[260px] underline decoration-orange-500/40 underline-offset-2"
                 >
                   {myTask || 'Click to set target...'}
                 </div>
@@ -426,15 +426,15 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
           <div className="glass-panel rounded-3xl p-6 border border-slate-200/80 dark:border-white/10 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-orange-500/20 text-orange-600 dark:text-orange-400 flex items-center justify-center">
                   <Volume2 className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Synthesized Ambient Audio</h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Zero latency Web Audio engine</p>
+                  <h3 className="text-sm font-bold text-black dark:text-white font-sans">Synthesized Ambient Audio</h3>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium font-mono">Zero latency Web Audio engine</p>
                 </div>
               </div>
-              <AudioVisualizer isPlaying={isSoundPlaying} color="#8B5CF6" barsCount={24} />
+              <AudioVisualizer isPlaying={isSoundPlaying} color="#F97316" barsCount={24} />
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
@@ -446,18 +446,18 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
                     onClick={() => toggleSound(snd.id)}
                     className={`flex flex-col items-center text-center p-3 rounded-2xl border transition-all ${
                       isActive
-                        ? 'bg-violet-50 dark:bg-violet-600/20 border-violet-300 dark:border-violet-500/50 text-violet-700 dark:text-violet-300 shadow-md shadow-violet-500/15 font-semibold'
-                        : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200/80 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+                        ? 'bg-orange-50 dark:bg-orange-500/20 border-orange-300 dark:border-orange-500/50 text-orange-700 dark:text-orange-300 shadow-md shadow-orange-500/15 font-semibold'
+                        : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10'
                     }`}
                   >
-                    <div className="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-transparent flex items-center justify-center mb-1.5 shadow-2xs">
-                      {snd.id === 'rain' && <CloudRain className="w-4 h-4 text-cyan-500" />}
-                      {snd.id === 'lofi' && <Music className="w-4 h-4 text-violet-500" />}
-                      {snd.id === 'brownNoise' && <Waves className="w-4 h-4 text-emerald-500" />}
-                      {snd.id === 'campfire' && <Flame className="w-4 h-4 text-amber-500" />}
-                      {snd.id === 'cafe' && <Coffee className="w-4 h-4 text-amber-700" />}
+                    <div className="w-8 h-8 rounded-xl bg-white dark:bg-black border border-slate-200 dark:border-white/10 flex items-center justify-center mb-1.5 shadow-2xs">
+                      {snd.id === 'rain' && <CloudRain className="w-4 h-4 text-green-500" />}
+                      {snd.id === 'lofi' && <Music className="w-4 h-4 text-orange-500" />}
+                      {snd.id === 'brownNoise' && <Waves className="w-4 h-4 text-green-500" />}
+                      {snd.id === 'campfire' && <Flame className="w-4 h-4 text-red-500" />}
+                      {snd.id === 'cafe' && <Coffee className="w-4 h-4 text-orange-600" />}
                     </div>
-                    <span className="text-xs font-bold text-slate-900 dark:text-white">{snd.name}</span>
+                    <span className="text-xs font-bold text-black dark:text-white">{snd.name}</span>
                     <span className="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">{snd.description}</span>
                   </button>
                 );
@@ -469,13 +469,13 @@ export const FocusRoom: React.FC<FocusRoomProps> = ({
         {/* Right: Peers Presence & Live Study Chat */}
         <div className="space-y-6">
           {/* Active Participants List */}
-          <div className="glass-panel rounded-3xl p-5 border border-slate-200/80 dark:border-white/10 shadow-sm">
+          <div className="glass-panel rounded-3xl p-5 border border-slate-200 dark:border-white/10 shadow-sm">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Active Peers ({activeRoom.members.length})</h3>
+                <Users className="w-4 h-4 text-orange-500" />
+                <h3 className="text-sm font-bold text-black dark:text-white font-sans">Active Peers ({activeRoom.members.length})</h3>
               </div>
-              <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono font-bold bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-500/20">
+              <span className="text-[10px] text-green-600 dark:text-green-400 font-mono font-bold bg-green-50 dark:bg-green-500/10 px-2 py-0.5 rounded-full border border-green-200 dark:border-green-500/20">
                 Synced
               </span>
             </div>
