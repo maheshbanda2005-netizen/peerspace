@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Pixelify+Sans:wght@400..700&family=Silkscreen:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,7 +7,7 @@
 @layer base {
   :root {
     --bg-base: #F8FAFC;
-    --text-primary: #0F172A;
+    --text-primary: #090C12;
     --text-secondary: #475569;
     --text-muted: #64748B;
     --card-bg: #FFFFFF;
@@ -13,28 +15,28 @@
     --card-border: #E2E8F0;
     --glass-bg: rgba(255, 255, 255, 0.85);
     --glass-border: rgba(226, 232, 240, 0.8);
-    --header-bg: rgba(255, 255, 255, 0.85);
-    --sidebar-bg: rgba(255, 255, 255, 0.95);
+    --header-bg: rgba(255, 255, 255, 0.90);
+    --sidebar-bg: rgba(255, 255, 255, 0.96);
   }
 
   .dark {
-    --bg-base: #0B0F19;
+    --bg-base: #090C12;
     --text-primary: #F8FAFC;
     --text-secondary: #94A3B8;
     --text-muted: #64748B;
-    --card-bg: #111827;
-    --card-bg-subtle: #1E293B;
+    --card-bg: #0F1522;
+    --card-bg-subtle: #182030;
     --card-border: rgba(255, 255, 255, 0.08);
-    --glass-bg: rgba(17, 24, 39, 0.75);
+    --glass-bg: rgba(15, 21, 34, 0.82);
     --glass-border: rgba(255, 255, 255, 0.08);
-    --header-bg: rgba(11, 15, 25, 0.85);
-    --sidebar-bg: rgba(11, 15, 25, 0.95);
+    --header-bg: rgba(9, 12, 18, 0.88);
+    --sidebar-bg: rgba(9, 12, 18, 0.96);
   }
 
   body {
     background-color: var(--bg-base);
     color: var(--text-primary);
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
@@ -201,3 +203,98 @@
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
 }
+
+/* Typography Utilities */
+.font-pixel {
+  font-family: 'Pixelify Sans', 'Silkscreen', monospace;
+  letter-spacing: 0.05em;
+}
+
+.font-geist {
+  font-family: 'Geist', sans-serif;
+}
+
+.font-geist-mono {
+  font-family: 'Geist Mono', monospace;
+}
+
+/* Red, Blue, Green, Gray, Black Palette & Badges */
+.badge-red {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+.dark .badge-red {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.badge-blue {
+  background-color: rgba(37, 99, 235, 0.12);
+  color: #2563EB;
+  border: 1px solid rgba(37, 99, 235, 0.28);
+}
+.dark .badge-blue {
+  background-color: rgba(37, 99, 235, 0.18);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.badge-green {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+.dark .badge-green {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.badge-gray {
+  background-color: rgba(100, 116, 139, 0.12);
+  color: #475569;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+}
+.dark .badge-gray {
+  background-color: rgba(148, 163, 184, 0.1);
+  color: #94A3B8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge-pixel {
+  font-family: 'Pixelify Sans', 'Silkscreen', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+}
+
+/* Clean Micro-Animations and Cards */
+.clean-interactive-card {
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.22s ease;
+}
+.clean-interactive-card:hover {
+  transform: translateY(-2px);
+}
+
+.glow-hover-red:hover {
+  border-color: rgba(239, 68, 68, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(239, 68, 68, 0.22);
+}
+
+.glow-hover-blue:hover {
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(37, 99, 235, 0.22);
+}
+
+.glow-hover-green:hover {
+  border-color: rgba(16, 185, 129, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(16, 185, 129, 0.22);
+}
+
+/* Pixel scanline subtle effect */
+.pixel-border {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
